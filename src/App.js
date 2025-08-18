@@ -14,7 +14,7 @@ import './GroceryStore.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Import the layout
-import MainLayout from './MainLayout';
+import Layout from './MainLayout';
 
 // Import your pages
 import GroceryStore from './GroceryStore';
