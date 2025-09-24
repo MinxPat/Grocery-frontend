@@ -1,167 +1,239 @@
 import React, { useState } from "react";
-import "./AddProduct.css";
+import "./AddProduct.css"; // Import CSS file
 
 const AddProduct = () => {
-  const [product, setProduct] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    quantity: "",
-    discount: 0,
-    image: null,
-  });
+  const [productName, setProductName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
+  const [discount, setDiscount] = useState(0.0);
+  const [image, setImage] = useState(null);
 
-  const categories = [
-    "Vegetables",
-    "Fruits",
-    "Beverages",
-    "Canned Food",
-    "Dairy",
-    "Meat",
-    "Sea Food",
-    "Snacks",
-  ];
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
-  };
-
-  const handleImageUpload = (e) => {
-    if (e.target.files[0]) {
-      setProduct({ ...product, image: URL.createObjectURL(e.target.files[0]) });
+  // Clear one field
+  const handleClear = (field) => {
+    switch (field) {
+      case "productName":
+        setProductName("");
+        break;
+      case "category":
+        setCategory("");
+        break;
+      case "price":
+        setPrice("");
+        break;
+      case "quantity":
+        setQuantity("");
+        break;
+      case "description":
+        setDescription("");
+        break;
+      case "discount":
+        setDiscount(0.0);
+        break;
+      case "image":
+        setImage(null);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Product Added:", product);
+  // Clear all fields
+  const handleClearAll = () => {
+    setProductName("");
+    setCategory("");
+    setPrice("");
+    setQuantity("");
+    setDescription("");
+    setDiscount(0.0);
+    setImage(null);
   };
 
-  const handleClear = () => {
-    setProduct({
-      name: "",
-      category: "",
-      description: "",
-      price: "",
-      quantity: "",
-      discount: 0,
-      image: null,
-    });
+  // Image upload handler
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  // Submit form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const productData = {
+      productName,
+      category,
+      price,
+      quantity,
+      description,
+      discount,
+      image,
+    };
+
+    console.log("Product Added:", productData);
+    alert("✅ Product added successfully!");
+    handleClearAll();
   };
 
   return (
     <div className="add-product-container">
-      <h2 className="form-title">➕ Add New Product</h2>
-      <form className="product-form" onSubmit={handleSubmit}>
-        {/* Left Section */}
-        <div className="form-left">
+      
+
+      <h2 className="form-title">
+        <span className="form-title-icon">+</span> Add New Product
+      </h2>
+
+      <form className="form-grid" onSubmit={handleSubmit}>
+        {/* Left column */}
+        <div className="form-column">
           <div className="form-group">
-            <label>Product Name <span className="required">*</span></label>
+            <label>Product Name *</label>
             <input
               type="text"
-              name="name"
-              value={product.name}
-              onChange={handleChange}
-              required
+              placeholder="Enter product name"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
             />
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("productName")}
+            >
+              Clear
+            </button>
           </div>
 
           <div className="form-group">
-            <label>Category <span className="required">*</span></label>
+            <label>Category *</label>
             <select
-              name="category"
-              value={product.category}
-              onChange={handleChange}
-              required
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">-- Select Category --</option>
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
-                </option>
-              ))}
+              <option value="fruits">Fruits</option>
+              <option value="vegetables">Vegetables</option>
+              <option value="dairy">Dairy</option>
+              <option value="snacks">Snacks</option>
             </select>
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("category")}
+            >
+              Clear
+            </button>
           </div>
 
           <div className="form-group">
-            <label>Price (Rs.) <span className="required">*</span></label>
+            <label>Price (Rs.) *</label>
             <input
               type="number"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              required
+              placeholder="Enter price"
+              value={price}
+              min="0"
+              onChange={(e) => setPrice(e.target.value)}
             />
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("price")}
+            >
+              Clear
+            </button>
           </div>
 
           <div className="form-group">
-            <label>Quantity <span className="required">*</span></label>
+            <label>Quantity *</label>
             <input
               type="number"
-              name="quantity"
-              value={product.quantity}
-              onChange={handleChange}
-              required
+              placeholder="Enter quantity"
+              value={quantity}
+              min="0"
+              onChange={(e) => setQuantity(e.target.value)}
             />
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("quantity")}
+            >
+              Clear
+            </button>
           </div>
         </div>
 
-        {/* Right Section */}
-        <div className="form-right">
+        {/* Right column */}
+        <div className="form-column right">
           <div className="form-group">
             <label>Description</label>
             <textarea
-              name="description"
-              rows="4"
-              value={product.description}
-              onChange={handleChange}
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("description")}
+            >
+              Clear
+            </button>
           </div>
 
           <div className="form-group">
             <label>Discount (%)</label>
             <input
               type="number"
-              name="discount"
-              value={product.discount}
-              onChange={handleChange}
+              placeholder="0.0"
+              value={discount}
+              min="0"
+              step="0.1"
+              onChange={(e) => setDiscount(parseFloat(e.target.value) || 0.0)}
             />
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("discount")}
+            >
+              Clear
+            </button>
           </div>
 
-          <div className="form-group">
+          <div className="form-group image-upload">
             <label>Upload Image</label>
-            <div className="image-upload-box">
+            <label className="upload-box">
               <input
                 type="file"
-                id="imageUpload"
                 accept="image/*"
-                onChange={handleImageUpload}
-                hidden
+                onChange={handleImageChange}
+                style={{ display: "none" }}
               />
-              <label htmlFor="imageUpload" className="upload-placeholder">
-                {product.image ? (
-                  <img src={product.image} alt="Preview" className="preview-img" />
-                ) : (
-                  <span className="plus-sign">+</span>
-                )}
-              </label>
-            </div>
+              <span className="upload-icon">📷</span>
+            </label>
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("image")}
+            >
+              Clear
+            </button>
           </div>
         </div>
-
-        {/* Buttons */}
-        <div className="form-actions">
-          <button type="submit" className="btn btn-primary">Add Product</button>
-          <button type="button" className="btn btn-secondary" onClick={handleClear}>
-            Clear
-          </button>
-        </div>
       </form>
+
+      {/* Action buttons */}
+      <div className="form-actions">
+        <button type="submit" className="submit-btn" onClick={handleSubmit}>
+          Add Product
+        </button>
+        <button
+          type="button"
+          className="clear-all-btn"
+          onClick={handleClearAll}
+        >
+          Clear All
+        </button>
+      </div>
     </div>
   );
 };
 
 export default AddProduct;
-
