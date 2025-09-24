@@ -47,7 +47,7 @@
 .ltext-green {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #10b981; /* Your brand's green color */
+    color: #10b981; /* Brand green */
 }
 
 /* Navigation Styling */
@@ -73,6 +73,55 @@
     font-weight: 600;
 }
 
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background: white;
+    border: 2px solid #10b981; /* ✅ Green border */
+    color: #10b981;             /* ✅ Green text */
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-btn:hover {
+    background-color: #e6f9f0; /* Light green hover */
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    min-width: 170px;
+    background: white;
+    border: 2px solid #10b981; /* ✅ Green border */
+    border-radius: 6px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 10px 14px;
+    display: block;
+    text-decoration: none;
+    color: #10b981;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #e6f9f0; /* ✅ Light green hover */
+}
 
 /* Header Right Side Styling */
 .header-right {
@@ -159,3 +208,4 @@
     top: -8px;
     right: -8px;
 }
+
