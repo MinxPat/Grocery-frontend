@@ -44,7 +44,7 @@ const Header = () => {
                             {dropdownOpen && (
                                 <div className="dropdown-menu">
                                     {isAdmin && (
-                                        <Link to="/add-product" className="dropdown-item">Add Product</Link>
+                                        <Link to="/products/add" className="dropdown-item">Add Product</Link>
                                     )}
                                     <Link to="/view-products" className="dropdown-item">View Products</Link>
                                     <Link to="/offers" className="dropdown-item">Special Offers</Link>
