@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart, Search, User } from 'lucide-react';
-import './Header.css'; // We'll create a dedicated CSS file for the header
+import './Header.css';
 
-const Header = () => {
-    // We can manage cart items globally later (e.g., with Context API)
-    // For now, this is just for display.
-    const [cartItems] = useState(0); 
+const Header = ({ isAdmin = false }) => {
+    const [cartItems] = useState(0);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     return (
         <header className="header">
@@ -23,9 +22,31 @@ const Header = () => {
 
                     {/* Navigation */}
                     <nav className="nav">
-                        {/* Use NavLink for active styling */}
                         <NavLink to="/" className="nav-link">Home</NavLink>
-                        <NavLink to="/products" className="nav-link">Products</NavLink>
+
+                        {/* Products with Dropdown */}
+                        <div
+                            className="nav-link dropdown"
+                            onMouseEnter={() => setShowDropdown(true)}
+                            onMouseLeave={() => setShowDropdown(false)}
+                        >
+                            <span>
+                                Products <span style={{ fontSize: '12px' }}>▼</span>
+                            </span>
+                            {showDropdown && (
+                                <div className="dropdown-menu">
+                                    <NavLink to="/products" className="dropdown-item">
+                                        View Products
+                                    </NavLink>
+                                    {isAdmin && (
+                                        <NavLink to="/add-product" className="dropdown-item">
+                                            Add Product
+                                        </NavLink>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
                         <NavLink to="/contact" className="nav-link">Contact</NavLink>
                     </nav>
 
@@ -51,9 +72,7 @@ const Header = () => {
                             <ShoppingCart size={18} />
                             <span className="cart-text">Cart</span>
                             {cartItems > 0 && (
-                                <span className="cart-badge">
-                                    {cartItems}
-                                </span>
+                                <span className="cart-badge">{cartItems}</span>
                             )}
                         </Link>
                     </div>
