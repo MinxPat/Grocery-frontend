@@ -7,8 +7,12 @@ const Header = () => {
     const [cartItems] = useState(0);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    // Hardcoded admin flag (later can be replaced with real auth check)
+    // Hardcoded admin flag (later replace with auth check)
     const isAdmin = true;
+
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
 
     return (
         <header className="header">
@@ -28,16 +32,13 @@ const Header = () => {
                     <nav className="nav">
                         <NavLink to="/" className="nav-link">Home</NavLink>
                         
-                        {/* Products with arrow toggle */}
-                        <div 
-                            className="dropdown" 
-                            onMouseEnter={() => setDropdownOpen(true)} 
-                            onMouseLeave={() => setDropdownOpen(false)}
-                        >
+                        {/* Products + Arrow dropdown */}
+                        <div className="dropdown">
                             <span className="nav-link">Products</span>
                             <ChevronDown 
-                                size={18} 
+                                size={20} 
                                 className={`dropdown-arrow ${dropdownOpen ? "open" : ""}`} 
+                                onClick={toggleDropdown}
                             />
 
                             {dropdownOpen && (
@@ -87,6 +88,7 @@ const Header = () => {
 };
 
 export default Header;
+
 
 
 
