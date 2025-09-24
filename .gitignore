@@ -1,22 +1,55 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/.pnp
+# =========================
+# Node.js / React
+# =========================
+node_modules/
+build/
+dist/
+.cache/
+.npm/
+.yarn/
+.pnp
 .pnp.js
 
-# testing
-/coverage
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# production
-/build
+# =========================
+# Coverage / Testing
+# =========================
+coverage/
+*.lcov
 
-# misc
-.DS_Store
+# =========================
+# Environment files
+# =========================
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS-specific files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Misc
+# =========================
+*.pem
+*.key
+

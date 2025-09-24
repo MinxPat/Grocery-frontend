@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { ShoppingCart, Search, User, ChevronDown, ChevronUp } from 'lucide-react';
-import './Header.css';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { ShoppingCart, Search, User } from "lucide-react";
+import "./Header.css";
 
 const Header = () => {
   const [cartItems] = useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const isAdmin = true; // later replace with real auth
+  // Toggle dropdown
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="header">
@@ -24,43 +37,62 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="nav">
-            <NavLink to="/" className="nav-link">Home</NavLink>
+            <NavLink to="/" className="nav-link">
+              Home
+            </NavLink>
 
-            {/* Dropdown */}
-            <div className="dropdown">
-              <button 
-                className="dropdown-btn" 
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                Products {isDropdownOpen ? <ChevronUp size={16}/> : <ChevronDown size={16}/>}
+            {/* Products + Dropdown */}
+            <div
+              className={`dropdown ${dropdownOpen ? "show" : ""}`}
+              ref={dropdownRef}
+            >
+              <NavLink to="/products" className="nav-link">
+                Products
+              </NavLink>
+              <button className="dropdown-toggle" onClick={toggleDropdown}>
+                ▾
               </button>
 
-              {isDropdownOpen && (
-                <div className="dropdown-menu">
-                  <Link to="/products" className="dropdown-item">View Products</Link>
-                  {isAdmin && <Link to="/add-product" className="dropdown-item">Add Product</Link>}
-                </div>
-              )}
+              <div className="dropdown-menu">
+                {/* ✅ For now visible to all, later restrict to admin */}
+                <NavLink to="/add-product" className="dropdown-item">
+                  Add Product
+                </NavLink>
+                <NavLink to="/view-products" className="dropdown-item">
+                  View Products
+                </NavLink>
+              </div>
             </div>
 
-            <NavLink to="/contact" className="nav-link">Contact</NavLink>
+            <NavLink to="/contact" className="nav-link">
+              Contact
+            </NavLink>
           </nav>
 
           {/* Right side */}
           <div className="header-right">
+            {/* Search */}
             <div className="search-box">
-              <Search size={18} className="search-icon"/>
-              <input type="text" placeholder="Search products..." className="search-input"/>
+              <Search size={18} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="search-input"
+              />
             </div>
 
+            {/* User */}
             <Link to="/login" className="icon-btn">
-              <User size={20}/>
+              <User size={20} />
             </Link>
 
+            {/* Cart */}
             <Link to="/cart" className="cart-btn">
-              <ShoppingCart size={18}/>
+              <ShoppingCart size={18} />
               <span className="cart-text">Cart</span>
-              {cartItems > 0 && <span className="cart-badge">{cartItems}</span>}
+              {cartItems > 0 && (
+                <span className="cart-badge">{cartItems}</span>
+              )}
             </Link>
           </div>
         </div>
@@ -70,4 +102,5 @@ const Header = () => {
 };
 
 export default Header;
+
 
