@@ -8,6 +8,7 @@ import MainLayout from './MainLayout';
 import GroceryStore from './GroceryStore';
 import Login from './Login';
 import Register from './Register';
+import AddProduct from './pages/AddProduct'; 
 // Create a placeholder for Products, Contact, and Cart if not implemented yet
 const Products = () => <div>Products Page</div>;
 const Contact = () => <div>Contact Page</div>;
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/add" element={<AddProduct />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
