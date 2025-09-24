@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import "./AddProduct.css";
 
 const AddProduct = () => {
-  const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState(0.0);
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [image, setImage] = useState(null);
+  const [product, setProduct] = useState({
+    name: "",
+    category: "",
+    description: "",
+    price: "",
+    quantity: "",
+    discount: 0,
+    image: null,
+  });
 
   const categories = [
     "Vegetables",
@@ -21,127 +23,139 @@ const AddProduct = () => {
     "Snacks",
   ];
 
-  const handleImageUpload = (e) => {
-    setImage(URL.createObjectURL(e.target.files[0]));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct({ ...product, [name]: value });
   };
 
-  const handleClear = () => {
-    setProductName("");
-    setCategory("");
-    setDescription("");
-    setDiscount(0.0);
-    setPrice("");
-    setQuantity("");
-    setImage(null);
+  const handleImageUpload = (e) => {
+    if (e.target.files[0]) {
+      setProduct({ ...product, image: URL.createObjectURL(e.target.files[0]) });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Product Added:", product);
+  };
 
-    const newProduct = {
-      productName,
-      category,
-      description,
-      discount: discount || 0.0,
-      price,
-      quantity,
-      imagePath: image,
-    };
-
-    console.log("Product Added:", newProduct);
-    alert("Product Added Successfully ✅");
-    handleClear();
+  const handleClear = () => {
+    setProduct({
+      name: "",
+      category: "",
+      description: "",
+      price: "",
+      quantity: "",
+      discount: 0,
+      image: null,
+    });
   };
 
   return (
-    <div className="add-product-page">
-      <h2 className="page-title">➕ Add New Product</h2>
+    <div className="add-product-container">
+      <h2 className="form-title">➕ Add New Product</h2>
       <form className="product-form" onSubmit={handleSubmit}>
-        {/* Product Name */}
-        <label>
-          Product Name <span className="required">*</span>
-          <input
-            type="text"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            required
-          />
-        </label>
+        {/* Left Section */}
+        <div className="form-left">
+          <div className="form-group">
+            <label>Product Name <span className="required">*</span></label>
+            <input
+              type="text"
+              name="name"
+              value={product.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        {/* Category */}
-        <label>
-          Category <span className="required">*</span>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">-- Select Category --</option>
-            {categories.map((cat, idx) => (
-              <option key={idx} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </label>
+          <div className="form-group">
+            <label>Category <span className="required">*</span></label>
+            <select
+              name="category"
+              value={product.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Select Category --</option>
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Description */}
-        <label>
-          Description
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </label>
+          <div className="form-group">
+            <label>Price (Rs.) <span className="required">*</span></label>
+            <input
+              type="number"
+              name="price"
+              value={product.price}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        {/* Price */}
-        <label>
-          Price ($) <span className="required">*</span>
-          <input
-            type="number"
-            step="0.01"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
-        </label>
+          <div className="form-group">
+            <label>Quantity <span className="required">*</span></label>
+            <input
+              type="number"
+              name="quantity"
+              value={product.quantity}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
 
-        {/* Quantity */}
-        <label>
-          Quantity <span className="required">*</span>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          />
-        </label>
+        {/* Right Section */}
+        <div className="form-right">
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="4"
+              value={product.description}
+              onChange={handleChange}
+            ></textarea>
+          </div>
 
-        {/* Discount */}
-        <label>
-          Discount (%)
-          <input
-            type="number"
-            step="0.01"
-            value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
-          />
-        </label>
+          <div className="form-group">
+            <label>Discount (%)</label>
+            <input
+              type="number"
+              name="discount"
+              value={product.discount}
+              onChange={handleChange}
+            />
+          </div>
 
-        {/* Image Upload */}
-        <label>
-          Upload Image
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-        </label>
-        {image && <img src={image} alt="Preview" className="preview-img" />}
+          <div className="form-group">
+            <label>Upload Image</label>
+            <div className="image-upload-box">
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                onChange={handleImageUpload}
+                hidden
+              />
+              <label htmlFor="imageUpload" className="upload-placeholder">
+                {product.image ? (
+                  <img src={product.image} alt="Preview" className="preview-img" />
+                ) : (
+                  <span className="plus-sign">+</span>
+                )}
+              </label>
+            </div>
+          </div>
+        </div>
 
         {/* Buttons */}
-        <div className="button-group">
-          <button type="submit" className="btn add-btn">
-            ✅ Add Product
-          </button>
-          <button type="button" onClick={handleClear} className="btn clear-btn">
-            ❌ Clear
+        <div className="form-actions">
+          <button type="submit" className="btn btn-primary">Add Product</button>
+          <button type="button" className="btn btn-secondary" onClick={handleClear}>
+            Clear
           </button>
         </div>
       </form>
@@ -150,3 +164,4 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
