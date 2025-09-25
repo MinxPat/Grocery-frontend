@@ -144,6 +144,7 @@ const AddProduct = () => {
               <option value="canned food">Canned Food</option>
               <option value="dairy">Dairy</option>
               <option value="meat">Meat</option>
+              <option value="Sea Food">Sea Food</option>
               <option value="snacks">Snacks</option>
             </select>
             <button
