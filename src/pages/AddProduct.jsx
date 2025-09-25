@@ -56,28 +56,46 @@ const AddProduct = () => {
   };
 
   // Submit form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const productData = {
-      productName,
+      proName: productName, 
       category,
-      price,
-      quantity,
+      price: parseFloat(price),
+      quantity: parseInt(quantity, 10),
       description,
-      discount,
-      image,
+      discount: parseFloat(discount),
+      imagePath: image ? image.name : "" 
     };
 
-    console.log("Product Added:", productData);
-    alert("✅ Product added successfully!");
-    handleClearAll();
+    try {
+      const response = await fetch("http://localhost:8080/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(productData)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        alert("Failed to add product: " + errorText);
+        return;
+      }
+
+      const savedProduct = await response.json();
+      console.log("Product added:", savedProduct);
+      alert("Product added successfully!");
+      handleClearAll();
+    } catch (error) {
+      console.error("Error adding product:", error);
+      alert("⚠️ Server error. Check backend logs.");
+    }
   };
 
   return (
     <div className="add-product-container">
-      
-
       <h2 className="form-title">
         <span className="form-title-icon">+</span> Add New Product
       </h2>
