@@ -6,10 +6,11 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [quantityUnit, setQuantityUnit] = useState(""); // ✅ new state
+  const [quantityUnit, setQuantityUnit] = useState(""); 
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0.0);
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Clear one field
   const handleClear = (field) => {
@@ -35,6 +36,7 @@ const AddProduct = () => {
         break;
       case "image":
         setImage(null);
+        setImagePreview(null);
         break;
       default:
         break;
@@ -51,11 +53,16 @@ const AddProduct = () => {
     setDescription("");
     setDiscount(0.0);
     setImage(null);
+    setImagePreview(null);
   };
 
   // Image upload handler
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
   // Submit form
@@ -269,7 +276,15 @@ const AddProduct = () => {
                 onChange={handleImageChange}
                 style={{ display: "none" }}
               />
-              <span className="upload-icon">📷</span>
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="image-preview"
+                />
+              ) : (
+                <span className="upload-icon">📷</span>
+              )}
             </label>
             <button
               type="button"

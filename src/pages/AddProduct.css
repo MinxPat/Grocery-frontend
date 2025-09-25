@@ -146,8 +146,10 @@ textarea:focus {
   align-items: center;
   cursor: pointer;
   margin: 12px auto;
-  background: #fff; /* White background */
+  background: #fff;
   transition: border-color 0.3s ease, background 0.3s ease;
+  overflow: hidden; /* ensures image stays inside */
+  position: relative;
 }
 
 .upload-icon {
@@ -163,6 +165,14 @@ textarea:focus {
 
 .upload-box:hover .upload-icon {
   opacity: 0.9;
+}
+
+/* Image preview */
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* scale & crop image neatly */
+  border-radius: 10px;
 }
 
 /* Action buttons */
@@ -205,6 +215,7 @@ textarea:focus {
   transform: scale(1.05);
 }
 
+/* Quantity unit radio buttons */
 .quantity-units {
   display: grid;
   grid-template-columns: 1fr 1fr; 
@@ -227,3 +238,4 @@ textarea:focus {
   accent-color: #14532d;
   transform: scale(1.2); 
 }
+
