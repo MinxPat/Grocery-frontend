@@ -6,6 +6,7 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [quantityUnit, setQuantityUnit] = useState(""); // ✅ new state
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0.0);
   const [image, setImage] = useState(null);
@@ -24,6 +25,7 @@ const AddProduct = () => {
         break;
       case "quantity":
         setQuantity("");
+        setQuantityUnit(""); // reset unit
         break;
       case "description":
         setDescription("");
@@ -45,6 +47,7 @@ const AddProduct = () => {
     setCategory("");
     setPrice("");
     setQuantity("");
+    setQuantityUnit("");
     setDescription("");
     setDiscount(0.0);
     setImage(null);
@@ -60,13 +63,14 @@ const AddProduct = () => {
     e.preventDefault();
 
     const productData = {
-      proName: productName, 
+      proName: productName,
       category,
       price: parseFloat(price),
       quantity: parseInt(quantity, 10),
+      quantityUnit, 
       description,
       discount: parseFloat(discount),
-      imagePath: image ? image.name : "" 
+      imagePath: image ? image.name : ""
     };
 
     try {
@@ -80,13 +84,13 @@ const AddProduct = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        alert("Failed to add product: " + errorText);
+        alert("❌ Failed to add product: " + errorText);
         return;
       }
 
       const savedProduct = await response.json();
       console.log("Product added:", savedProduct);
-      alert("Product added successfully!");
+      alert("✅ Product added successfully!");
       handleClearAll();
     } catch (error) {
       console.error("Error adding product:", error);
@@ -127,9 +131,12 @@ const AddProduct = () => {
               onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">-- Select Category --</option>
-              <option value="fruits">Fruits</option>
               <option value="vegetables">Vegetables</option>
+              <option value="fruits">Fruits</option>
+              <option value="beverages">Beverages</option>
+              <option value="canned food">Canned Food</option>
               <option value="dairy">Dairy</option>
+              <option value="meat">Meat</option>
               <option value="snacks">Snacks</option>
             </select>
             <button
@@ -168,6 +175,44 @@ const AddProduct = () => {
               min="0"
               onChange={(e) => setQuantity(e.target.value)}
             />
+            <div className="quantity-units">
+              <label>
+                <input
+                  type="radio"
+                  value="kg"
+                  checked={quantityUnit === "kg"}
+                  onChange={(e) => setQuantityUnit(e.target.value)}
+                />
+                kg
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="g"
+                  checked={quantityUnit === "g"}
+                  onChange={(e) => setQuantityUnit(e.target.value)}
+                />
+                g
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="ml"
+                  checked={quantityUnit === "ml"}
+                  onChange={(e) => setQuantityUnit(e.target.value)}
+                />
+                ml
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="l"
+                  checked={quantityUnit === "l"}
+                  onChange={(e) => setQuantityUnit(e.target.value)}
+                />
+                l
+              </label>
+            </div>
             <button
               type="button"
               className="clear-btn"

@@ -204,3 +204,26 @@ textarea:focus {
   background: #c2410c; 
   transform: scale(1.05);
 }
+
+.quantity-units {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px 20px; 
+  margin-top: 15px;
+}
+
+.quantity-units label {
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  color: #14532d;
+  font-weight: 500;
+  cursor: pointer;
+  padding-left: 60px;
+}
+
+.quantity-units input[type="radio"] {
+  margin-right: 8px;
+  accent-color: #14532d;
+  transform: scale(1.2); 
+}
