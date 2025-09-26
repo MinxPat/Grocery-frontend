@@ -6,7 +6,7 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [quantityUnit, setQuantityUnit] = useState(""); 
+  const [quantityUnit, setQuantityUnit] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0.0);
   const [image, setImage] = useState(null);
@@ -15,31 +15,14 @@ const AddProduct = () => {
   // Clear one field
   const handleClear = (field) => {
     switch (field) {
-      case "productName":
-        setProductName("");
-        break;
-      case "category":
-        setCategory("");
-        break;
-      case "price":
-        setPrice("");
-        break;
-      case "quantity":
-        setQuantity("");
-        setQuantityUnit(""); // reset unit
-        break;
-      case "description":
-        setDescription("");
-        break;
-      case "discount":
-        setDiscount(0.0);
-        break;
-      case "image":
-        setImage(null);
-        setImagePreview(null);
-        break;
-      default:
-        break;
+      case "productName": setProductName(""); break;
+      case "category": setCategory(""); break;
+      case "price": setPrice(""); break;
+      case "quantity": setQuantity(""); setQuantityUnit(""); break;
+      case "description": setDescription(""); break;
+      case "discount": setDiscount(0.0); break;
+      case "image": setImage(null); setImagePreview(null); break;
+      default: break;
     }
   };
 
@@ -69,24 +52,22 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const productData = {
-      proName: productName,
-      category,
-      price: parseFloat(price),
-      quantity: parseInt(quantity, 10),
-      quantityUnit, 
-      description,
-      discount: parseFloat(discount),
-      imagePath: image ? image.name : ""
-    };
+    const formData = new FormData();
+    formData.append("proName", productName);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("quantity", quantity);
+    formData.append("quantityUnit", quantityUnit);
+    formData.append("description", description);
+    formData.append("discount", discount);
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
       const response = await fetch("http://localhost:8082/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(productData)
+        body: formData,
       });
 
       if (!response.ok) {
@@ -122,21 +103,12 @@ const AddProduct = () => {
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
             />
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("productName")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("productName")}>Clear</button>
           </div>
 
           <div className="form-group">
             <label>Category *</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
               <option value="">-- Select Category --</option>
               <option value="vegetables">Vegetables</option>
               <option value="fruits">Fruits</option>
@@ -147,13 +119,7 @@ const AddProduct = () => {
               <option value="Sea Food">Sea Food</option>
               <option value="snacks">Snacks</option>
             </select>
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("category")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("category")}>Clear</button>
           </div>
 
           <div className="form-group">
@@ -165,13 +131,7 @@ const AddProduct = () => {
               min="0"
               onChange={(e) => setPrice(e.target.value)}
             />
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("price")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("price")}>Clear</button>
           </div>
 
           <div className="form-group">
@@ -184,50 +144,12 @@ const AddProduct = () => {
               onChange={(e) => setQuantity(e.target.value)}
             />
             <div className="quantity-units">
-              <label>
-                <input
-                  type="radio"
-                  value="kg"
-                  checked={quantityUnit === "kg"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                kg
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="g"
-                  checked={quantityUnit === "g"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                g
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="ml"
-                  checked={quantityUnit === "ml"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                ml
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="l"
-                  checked={quantityUnit === "l"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                l
-              </label>
+              <label><input type="radio" value="kg" checked={quantityUnit === "kg"} onChange={(e) => setQuantityUnit(e.target.value)} />kg</label>
+              <label><input type="radio" value="g" checked={quantityUnit === "g"} onChange={(e) => setQuantityUnit(e.target.value)} />g</label>
+              <label><input type="radio" value="ml" checked={quantityUnit === "ml"} onChange={(e) => setQuantityUnit(e.target.value)} />ml</label>
+              <label><input type="radio" value="l" checked={quantityUnit === "l"} onChange={(e) => setQuantityUnit(e.target.value)} />l</label>
             </div>
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("quantity")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("quantity")}>Clear</button>
           </div>
         </div>
 
@@ -235,18 +157,8 @@ const AddProduct = () => {
         <div className="form-column right">
           <div className="form-group">
             <label>Description</label>
-            <textarea
-              placeholder="Enter description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("description")}
-            >
-              Clear
-            </button>
+            <textarea placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+            <button type="button" className="clear-btn" onClick={() => handleClear("description")}>Clear</button>
           </div>
 
           <div className="form-group">
@@ -259,57 +171,28 @@ const AddProduct = () => {
               step="0.1"
               onChange={(e) => setDiscount(parseFloat(e.target.value) || 0.0)}
             />
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("discount")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("discount")}>Clear</button>
           </div>
 
           <div className="form-group image-upload">
             <label>Upload Image</label>
             <label className="upload-box">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
+              <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
               {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="image-preview"
-                />
+                <img src={imagePreview} alt="Preview" className="image-preview" />
               ) : (
                 <span className="upload-icon">📷</span>
               )}
             </label>
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => handleClear("image")}
-            >
-              Clear
-            </button>
+            <button type="button" className="clear-btn" onClick={() => handleClear("image")}>Clear</button>
           </div>
         </div>
       </form>
 
       {/* Action buttons */}
       <div className="form-actions">
-        <button type="submit" className="submit-btn" onClick={handleSubmit}>
-          Add Product
-        </button>
-        <button
-          type="button"
-          className="clear-all-btn"
-          onClick={handleClearAll}
-        >
-          Clear All
-        </button>
+        <button type="submit" className="submit-btn" onClick={handleSubmit}>Add Product</button>
+        <button type="button" className="clear-all-btn" onClick={handleClearAll}>Clear All</button>
       </div>
     </div>
   );
