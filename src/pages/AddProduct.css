@@ -6,12 +6,9 @@
   border-radius: 10px;
   position: relative;
   z-index: 1;
-
   background: url("../assets/images/background.jpg") no-repeat center center;
   background-size: cover;
   background-position: left 60% top 60%;
-
-  /* Add inner shadow for separation */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.6);
 }
 
@@ -23,7 +20,7 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2); /* White transparent overlay */
+  background: rgba(255, 255, 255, 0.2);
   z-index: -1;
 }
 
@@ -34,7 +31,7 @@
   justify-content: center;
   font-size: 25px;
   font-weight: 700;
-  color: #14532d; 
+  color: #14532d;
   margin-bottom: 25px;
 }
 
@@ -47,9 +44,10 @@
 .form-grid {
   display: flex;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
-/* Each column */
+/* Columns */
 .form-column {
   flex: 1;
   display: flex;
@@ -71,7 +69,7 @@
 .form-group label {
   font-weight: 600;
   margin-bottom: 6px;
-  color: #14532d; 
+  color: #14532d;
   font-size: 15px;
 }
 
@@ -83,7 +81,7 @@ textarea {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ddd;
-  background: #fff; 
+  background: #fff;
   font-size: 14px;
   outline: none;
 }
@@ -96,7 +94,7 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #f97316; 
+  border-color: #f97316;
   background: #fff;
   box-shadow: 0 0 4px rgba(249, 115, 22, 0.4);
 }
@@ -105,7 +103,7 @@ textarea:focus {
 .clear-btn {
   align-self: flex-end;
   margin-top: 5px;
-  background: #f97316; 
+  background: #f97316;
   color: #fff;
   border: none;
   padding: 5px 12px;
@@ -116,7 +114,7 @@ textarea:focus {
 }
 
 .clear-btn:hover {
-  background: #ea580c; 
+  background: #ea580c;
   transform: scale(1.05);
 }
 
@@ -126,14 +124,7 @@ textarea:focus {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  position: relative;
-}
-
-.image-upload label:first-of-type {
-  align-self: flex-start;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #14532d; 
+  height: 100%;
 }
 
 .upload-box {
@@ -144,12 +135,19 @@ textarea:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   margin: 12px auto;
   background: #fff;
-  transition: border-color 0.3s ease, background 0.3s ease;
-  overflow: hidden; /* ensures image stays inside */
+  overflow: hidden;
   position: relative;
+}
+
+.upload-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .upload-icon {
@@ -159,8 +157,8 @@ textarea:focus {
 }
 
 .upload-box:hover {
-  border-color: #f97316; 
-  background: #fff7ed;   
+  border-color: #f97316;
+  background: #fff7ed;
 }
 
 .upload-box:hover .upload-icon {
@@ -171,7 +169,7 @@ textarea:focus {
 .image-preview {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -181,10 +179,11 @@ textarea:focus {
   justify-content: center;
   gap: 15px;
   margin-top: 30px;
+  width: 100%;
 }
 
 .submit-btn {
-  background: #14532d; 
+  background: #14532d;
   color: #fff;
   border: none;
   padding: 12px 22px;
@@ -195,12 +194,12 @@ textarea:focus {
 }
 
 .submit-btn:hover {
-  background: #0c3f2e; 
+  background: #0c3f2e;
   transform: scale(1.05);
 }
 
 .clear-all-btn {
-  background: #ea580c; 
+  background: #ea580c;
   color: #fff;
   border: none;
   padding: 12px 22px;
@@ -211,15 +210,15 @@ textarea:focus {
 }
 
 .clear-all-btn:hover {
-  background: #c2410c; 
+  background: #c2410c;
   transform: scale(1.05);
 }
 
 /* Quantity unit radio buttons */
 .quantity-units {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
-  gap: 20px 20px; 
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 20px;
   margin-top: 15px;
 }
 
@@ -236,6 +235,5 @@ textarea:focus {
 .quantity-units input[type="radio"] {
   margin-right: 8px;
   accent-color: #14532d;
-  transform: scale(1.2); 
+  transform: scale(1.2);
 }
-
