@@ -9,7 +9,7 @@ const AddProduct = () => {
   const [quantityUnit, setQuantityUnit] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0.0);
-  const [imagePath, setImagePath] = useState("");
+  const [imageFile, setImageFile] = useState(null); // ✅ store file instead of path
   const [imagePreview, setImagePreview] = useState(null);
 
   // Clear one field
@@ -34,8 +34,8 @@ const AddProduct = () => {
       case "discount":
         setDiscount(0.0);
         break;
-      case "imagePath":
-        setImagePath("");
+      case "imageFile":
+        setImageFile(null);
         setImagePreview(null);
         break;
       default:
@@ -52,18 +52,16 @@ const AddProduct = () => {
     setQuantityUnit("");
     setDescription("");
     setDiscount(0.0);
-    setImagePath("");
+    setImageFile(null);
     setImagePreview(null);
   };
 
-  // Image selection handler (only path)
+  // Image selection handler (store actual file)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Path inside public/images
-      const relativePath = `/images/${file.name}`;
-      setImagePath(relativePath);
-      setImagePreview(relativePath); // preview directly
+      setImageFile(file); //  store file directly
+      setImagePreview(URL.createObjectURL(file)); // for preview
     }
   };
 
@@ -79,7 +77,10 @@ const AddProduct = () => {
     formData.append("quantityUnit", quantityUnit);
     formData.append("description", description);
     formData.append("discount", discount);
-    formData.append("imagePath", imagePath); // ✅ only path
+
+    if (imageFile) {
+      formData.append("imageFile", imageFile); 
+    }
 
     try {
       const response = await fetch("http://localhost:8082/api/products", {
@@ -293,7 +294,7 @@ const AddProduct = () => {
             <button
               type="button"
               className="clear-btn"
-              onClick={() => handleClear("imagePath")}
+              onClick={() => handleClear("imageFile")}
             >
               Clear
             </button>
