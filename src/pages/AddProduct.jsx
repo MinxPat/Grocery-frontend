@@ -5,13 +5,16 @@ const AddProduct = () => {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [stockQuantity, setStockQuantity] = useState(""); // total quantity from supplier
-  const [displayQuantity, setDisplayQuantity] = useState(""); // quantity shown to customer
-  const [quantityUnit, setQuantityUnit] = useState(""); // radio selection
+  const [stockQuantity, setStockQuantity] = useState("");
+  const [stockUnit, setStockUnit] = useState("");
+  const [displayQuantity, setDisplayQuantity] = useState("");
+  const [displayUnit, setDisplayUnit] = useState("");
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState(0); // int now
+  const [discount, setDiscount] = useState(0);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  const unitOptions = ["KG", "G", "ML", "L", "PACKET", "BOTTLE", "CAN"];
 
   // Clear one field
   const handleClear = (field) => {
@@ -28,11 +31,14 @@ const AddProduct = () => {
       case "stockQuantity":
         setStockQuantity("");
         break;
+      case "stockUnit":
+        setStockUnit("");
+        break;
       case "displayQuantity":
         setDisplayQuantity("");
         break;
-      case "quantityUnit":
-        setQuantityUnit("");
+      case "displayUnit":
+        setDisplayUnit("");
         break;
       case "description":
         setDescription("");
@@ -55,8 +61,9 @@ const AddProduct = () => {
     setCategory("");
     setPrice("");
     setStockQuantity("");
+    setStockUnit("");
     setDisplayQuantity("");
-    setQuantityUnit("");
+    setDisplayUnit("");
     setDescription("");
     setDiscount(0);
     setImageFile(null);
@@ -81,8 +88,9 @@ const AddProduct = () => {
     formData.append("category", category);
     formData.append("price", price);
     formData.append("stockQuantity", stockQuantity);
+    formData.append("stockUnit", stockUnit);
     formData.append("displayQuantity", displayQuantity);
-    formData.append("quantityUnit", quantityUnit);
+    formData.append("displayUnit", displayUnit);
     formData.append("description", description);
     formData.append("discount", discount);
 
@@ -128,6 +136,7 @@ const AddProduct = () => {
               placeholder="Enter product name"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              className="white-input"
             />
             <button
               type="button"
@@ -143,6 +152,7 @@ const AddProduct = () => {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
+              className="white-input"
             >
               <option value="">-- Select Category --</option>
               <option value="vegetables">Vegetables</option>
@@ -171,6 +181,7 @@ const AddProduct = () => {
               value={price}
               min="0"
               onChange={(e) => setPrice(e.target.value)}
+              className="white-input"
             />
             <button
               type="button"
@@ -181,52 +192,68 @@ const AddProduct = () => {
             </button>
           </div>
 
-          <div className="form-group">
-            <label>Stock Quantity (Supplier) *</label>
+          <div className="form-group stock-group">
+            <label>Stock Quantity</label>
             <input
               type="number"
               placeholder="Enter stock quantity"
               value={stockQuantity}
               min="0"
               onChange={(e) => setStockQuantity(e.target.value)}
+              className="white-input"
             />
+            <select
+              value={stockUnit}
+              onChange={(e) => setStockUnit(e.target.value)}
+              className="white-input"
+            >
+              <option value="">-- Select Unit --</option>
+              {unitOptions.map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit}
+                </option>
+              ))}
+            </select>
             <button
               type="button"
               className="clear-btn"
-              onClick={() => handleClear("stockQuantity")}
+              onClick={() => {
+                handleClear("stockQuantity");
+                handleClear("stockUnit");
+              }}
             >
               Clear
             </button>
           </div>
 
-          <div className="form-group">
-            <label>Display Quantity (Customer Sees) *</label>
+          <div className="form-group display-group">
+            <label>Display Quantity (For customers) </label>
             <input
               type="number"
               placeholder="Enter display quantity"
               value={displayQuantity}
               min="0"
               onChange={(e) => setDisplayQuantity(e.target.value)}
+              className="white-input"
             />
-            <div className="quantity-units">
-              {["KG", "G", "ML", "L", "PACKETS", "BOTTLES", "CANS"].map((unit) => (
-                <label key={unit}>
-                  <input
-                    type="radio"
-                    value={unit}
-                    checked={quantityUnit === unit}
-                    onChange={(e) => setQuantityUnit(e.target.value)}
-                  />
+            <select
+              value={displayUnit}
+              onChange={(e) => setDisplayUnit(e.target.value)}
+              className="white-input"
+            >
+              <option value="">-- Select Unit --</option>
+              {unitOptions.map((unit) => (
+                <option key={unit} value={unit}>
                   {unit}
-                </label>
+                </option>
               ))}
-            </div>
+            </select>
             <button
               type="button"
               className="clear-btn"
               onClick={() => {
                 handleClear("displayQuantity");
-                handleClear("quantityUnit");
+                handleClear("displayUnit");
               }}
             >
               Clear
@@ -242,6 +269,7 @@ const AddProduct = () => {
               placeholder="Enter description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              className="white-input"
             ></textarea>
             <button
               type="button"
@@ -260,6 +288,7 @@ const AddProduct = () => {
               value={discount}
               min="0"
               onChange={(e) => setDiscount(parseInt(e.target.value) || 0)}
+              className="white-input"
             />
             <button
               type="button"
@@ -270,8 +299,8 @@ const AddProduct = () => {
             </button>
           </div>
 
-          <div className="form-group image-upload">
-            <label>Upload Image</label>
+          <div className="form-group image-upload aligned-left">
+            <label className="image-label">Upload Image</label>
             <div className="upload-box">
               <input
                 id="product-image"
@@ -321,3 +350,5 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
+
