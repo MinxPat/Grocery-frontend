@@ -5,11 +5,12 @@ const AddProduct = () => {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [quantityUnit, setQuantityUnit] = useState("");
+  const [stockQuantity, setStockQuantity] = useState(""); // total quantity from supplier
+  const [displayQuantity, setDisplayQuantity] = useState(""); // quantity shown to customer
+  const [quantityUnit, setQuantityUnit] = useState(""); // radio selection
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState(0.0);
-  const [imageFile, setImageFile] = useState(null); // ✅ store file instead of path
+  const [discount, setDiscount] = useState(0); // int now
+  const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   // Clear one field
@@ -24,15 +25,20 @@ const AddProduct = () => {
       case "price":
         setPrice("");
         break;
-      case "quantity":
-        setQuantity("");
+      case "stockQuantity":
+        setStockQuantity("");
+        break;
+      case "displayQuantity":
+        setDisplayQuantity("");
+        break;
+      case "quantityUnit":
         setQuantityUnit("");
         break;
       case "description":
         setDescription("");
         break;
       case "discount":
-        setDiscount(0.0);
+        setDiscount(0);
         break;
       case "imageFile":
         setImageFile(null);
@@ -48,20 +54,21 @@ const AddProduct = () => {
     setProductName("");
     setCategory("");
     setPrice("");
-    setQuantity("");
+    setStockQuantity("");
+    setDisplayQuantity("");
     setQuantityUnit("");
     setDescription("");
-    setDiscount(0.0);
+    setDiscount(0);
     setImageFile(null);
     setImagePreview(null);
   };
 
-  // Image selection handler (store actual file)
+  // Image handler
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file); //  store file directly
-      setImagePreview(URL.createObjectURL(file)); // for preview
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -73,13 +80,14 @@ const AddProduct = () => {
     formData.append("proName", productName);
     formData.append("category", category);
     formData.append("price", price);
-    formData.append("quantity", quantity);
+    formData.append("stockQuantity", stockQuantity);
+    formData.append("displayQuantity", displayQuantity);
     formData.append("quantityUnit", quantityUnit);
     formData.append("description", description);
     formData.append("discount", discount);
 
     if (imageFile) {
-      formData.append("imageFile", imageFile); 
+      formData.append("imageFile", imageFile);
     }
 
     try {
@@ -143,7 +151,7 @@ const AddProduct = () => {
               <option value="canned food">Canned Food</option>
               <option value="dairy">Dairy</option>
               <option value="meat">Meat</option>
-              <option value="Sea Food">Sea Food</option>
+              <option value="sea food">Sea Food</option>
               <option value="snacks">Snacks</option>
             </select>
             <button
@@ -174,56 +182,52 @@ const AddProduct = () => {
           </div>
 
           <div className="form-group">
-            <label>Quantity *</label>
+            <label>Stock Quantity (Supplier) *</label>
             <input
               type="number"
-              placeholder="Enter quantity"
-              value={quantity}
+              placeholder="Enter stock quantity"
+              value={stockQuantity}
               min="0"
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setStockQuantity(e.target.value)}
+            />
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => handleClear("stockQuantity")}
+            >
+              Clear
+            </button>
+          </div>
+
+          <div className="form-group">
+            <label>Display Quantity (Customer Sees) *</label>
+            <input
+              type="number"
+              placeholder="Enter display quantity"
+              value={displayQuantity}
+              min="0"
+              onChange={(e) => setDisplayQuantity(e.target.value)}
             />
             <div className="quantity-units">
-              <label>
-                <input
-                  type="radio"
-                  value="kg"
-                  checked={quantityUnit === "kg"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                kg
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="g"
-                  checked={quantityUnit === "g"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                g
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="ml"
-                  checked={quantityUnit === "ml"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                ml
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="l"
-                  checked={quantityUnit === "l"}
-                  onChange={(e) => setQuantityUnit(e.target.value)}
-                />
-                l
-              </label>
+              {["KG", "G", "ML", "L", "PACKETS", "BOTTLES", "CANS"].map((unit) => (
+                <label key={unit}>
+                  <input
+                    type="radio"
+                    value={unit}
+                    checked={quantityUnit === unit}
+                    onChange={(e) => setQuantityUnit(e.target.value)}
+                  />
+                  {unit}
+                </label>
+              ))}
             </div>
             <button
               type="button"
               className="clear-btn"
-              onClick={() => handleClear("quantity")}
+              onClick={() => {
+                handleClear("displayQuantity");
+                handleClear("quantityUnit");
+              }}
             >
               Clear
             </button>
@@ -252,13 +256,10 @@ const AddProduct = () => {
             <label>Discount (%)</label>
             <input
               type="number"
-              placeholder="0.0"
+              placeholder="0"
               value={discount}
               min="0"
-              step="0.1"
-              onChange={(e) =>
-                setDiscount(parseFloat(e.target.value) || 0.0)
-              }
+              onChange={(e) => setDiscount(parseInt(e.target.value) || 0)}
             />
             <button
               type="button"

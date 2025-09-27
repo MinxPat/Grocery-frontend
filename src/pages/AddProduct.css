@@ -103,7 +103,7 @@ textarea:focus {
 .clear-btn {
   align-self: flex-end;
   margin-top: 5px;
-  background: #f97316;
+  background: #ff6600;
   color: #fff;
   border: none;
   padding: 5px 12px;
@@ -114,7 +114,7 @@ textarea:focus {
 }
 
 .clear-btn:hover {
-  background: #ea580c;
+  background: #e65c00;
   transform: scale(1.05);
 }
 
@@ -200,7 +200,7 @@ textarea:focus {
 }
 
 .clear-all-btn {
-  background: #ea580c;
+  background: #ff6600;
   color: #fff;
   border: none;
   padding: 12px 22px;
@@ -211,19 +211,23 @@ textarea:focus {
 }
 
 .clear-all-btn:hover {
-  background: #c2410c;
+  background: #e65c00;
   transform: scale(1.05);
 }
 
-/* Quantity unit radio buttons */
-.quantity-units {
+/* Quantity Stock & Display radio buttons */
+.quantity-units,
+.stock-quantity-options,
+.display-quantity-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px 20px;
   margin-top: 15px;
 }
 
-.quantity-units label {
+.quantity-units label,
+.stock-quantity-options label,
+.display-quantity-options label {
   display: flex;
   align-items: center;
   font-size: 17px;
@@ -233,7 +237,9 @@ textarea:focus {
   padding-left: 60px;
 }
 
-.quantity-units input[type="radio"] {
+.quantity-units input[type="radio"],
+.stock-quantity-options input[type="radio"],
+.display-quantity-options input[type="radio"] {
   margin-right: 8px;
   accent-color: #14532d;
   transform: scale(1.2);
